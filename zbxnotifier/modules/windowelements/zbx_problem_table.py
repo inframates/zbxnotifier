@@ -45,14 +45,11 @@ class ZbxProblemTable(QTableWidget):
             return [228, 89, 89]
 
     def update_data(self, problems):
-        print("update data celled")
         self.problems = problems
         self._set_rows()
-
         self._refresh_data()
 
     def _refresh_data(self):
-        print("adding rows to table: " + str(len(self.problems)))
         row = 0
         for problem in self.problems:
             severity = problem.trigger.severity

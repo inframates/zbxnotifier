@@ -1,8 +1,5 @@
 from PyQt5.QtCore import QRunnable, pyqtSlot, pyqtSignal, QObject
-
-
 from zbxnotifier.modules.zabbix.zabbix import Zabbix, ZabbixConnection
-
 import sys
 
 
@@ -13,7 +10,6 @@ class WorkerSignals(QObject):
 
 
 class ProblemsWorker(QRunnable):
-
     def __init__(self):
         super(ProblemsWorker, self).__init__()
         self.signals = WorkerSignals()

@@ -1,6 +1,7 @@
 from zbxnotifier.modules.settings import Settings
 from zbxnotifier.modules.windowelements.zbx_problem_table import ZbxProblemTable
 from zbxnotifier.modules.zabbix.problems import ProblemsWorker
+from zbxnotifier.modules.windowelements.statusbar import StatusWorker
 from zbxnotifier.modules.windowelements.statusbar import Statusbar
 
 from PyQt5.QtWidgets import QMainWindow
@@ -21,10 +22,15 @@ class MainWindow(QMainWindow):
         self.problem_table_timer.timeout.connect(self.update_problem_table_worker)
         self.problem_table_timer.start()
 
+        self.statusbar_timer = QTimer()
+        self.statusbar_timer.setInterval(1000)
+        self.statusbar_timer.timeout.connect(self.update_bar_worker)
+        self.statusbar_timer.start()
+
     def init_ui(self):
         self._create_menu()
         self._create_central_widget()
-        self.setStatusBar(Statusbar())
+        self._create_statusbar()
 
         self.threadpool = QThreadPool()
         print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
@@ -40,6 +46,19 @@ class MainWindow(QMainWindow):
         """
         self.zbx_problem_table = ZbxProblemTable()
         self.setCentralWidget(self.zbx_problem_table)
+
+    def _create_statusbar(self):
+        self.statusbar = Statusbar()
+        self.setStatusBar(self.statusbar)
+
+    def update_bar_worker(self):
+        worker = StatusWorker()
+        worker.signals.result.connect(self.update_bar)
+
+        self.threadpool.start(worker)
+
+    def update_bar(self):
+        self.statusbar.update_elements()
 
     def update_problem_table_worker(self):
         worker = ProblemsWorker()

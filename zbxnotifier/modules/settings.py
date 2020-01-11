@@ -6,6 +6,6 @@ class Settings:
     main_window_height = 500
     main_window_width = 600
 
-    zabbix_user = "Admin"
+    zabbix_user = "Admina"
     zabbix_password = keyring.get_password("zabbix", "Admin")
     zabbix_url = "http://192.168.1.160"

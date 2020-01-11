@@ -1,23 +1,36 @@
 from pyzabbix.api import ZabbixAPI
 from zbxnotifier.modules.settings import Settings
 from modules.zabbix.elements import Trigger, Problem, Event, Host
+from pyzabbix.api import ZabbixAPIException
 
 
 class ZabbixConnection:
     connection = None
     token = None
+    error = False
+    error_message = ""
 
     def __init__(self):
         if ZabbixConnection.connection is None:
-            ZabbixConnection.connection = ZabbixAPI(url=Settings.zabbix_url, user=Settings.zabbix_user, password=Settings.zabbix_password)
-            ZabbixConnection.token = ZabbixConnection.connection.auth
+            try:
+                ZabbixConnection.connection = ZabbixAPI(url=Settings.zabbix_url, user=Settings.zabbix_user, password=Settings.zabbix_password)
+                ZabbixConnection.token = ZabbixConnection.connection.auth
+            except ZabbixAPIException as e:
+                ZabbixConnection.error = True
+                ZabbixConnection.error_message = e.data
 
-    def get_status_desc(self):
-        if ZabbixConnection.connection is not None and ZabbixConnection.token is not None:
+    @staticmethod
+    def get_status_desc():
+        if ZabbixConnection.connection is not None and ZabbixConnection.token is not None and ZabbixConnection.error is False:
             return "Connected"
+        elif ZabbixConnection.connection is None and ZabbixConnection.token is None and ZabbixConnection.error is False:
+            return "Logging in"
+        elif ZabbixConnection.connection is None and ZabbixConnection.token is None and ZabbixConnection.error is True:
+            return "Error: " + str(ZabbixConnection.error_message)
         return "Disconnected"
 
-    def is_connected(self):
+    @staticmethod
+    def is_connected():
         if ZabbixConnection.connection is None:
             return False
         return True
