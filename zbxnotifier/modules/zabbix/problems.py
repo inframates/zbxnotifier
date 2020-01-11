@@ -1,6 +1,8 @@
-from modules.zabbix.elements import Host
-from zbxnotifier.modules.settings import Settings
 from PyQt5.QtCore import QRunnable, pyqtSlot, pyqtSignal, QObject
+
+
+from zbxnotifier.modules.zabbix.zabbix import Zabbix, ZabbixConnection
+
 import sys
 
 
@@ -15,6 +17,7 @@ class ProblemsWorker(QRunnable):
     def __init__(self):
         super(ProblemsWorker, self).__init__()
         self.signals = WorkerSignals()
+        self.zbx = Zabbix()
 
     @pyqtSlot()
     def run(self):
@@ -28,13 +31,17 @@ class ProblemsWorker(QRunnable):
 
     def get_problems(self):
         # Get all the problems
-        problems = Settings.zbx_api.get_problems()
+        if not ZabbixConnection().is_connected():
+            print("We are not connected to the Zabbix server.")
+            return []
+
+        problems = self.zbx.get_problems()
 
         # Get all the triggers
         trigger_ids = []
         for problem in problems:
             trigger_ids.append(problem.triggerid)
-        triggers = Settings.zbx_api.get_triggers(trigger_ids)
+        triggers = self.zbx.get_triggers(trigger_ids)
 
         for problem in problems:
             for trigger in triggers:
@@ -46,7 +53,7 @@ class ProblemsWorker(QRunnable):
                     problem.trigger = None
 
         # Get all events based on the trigger IDs
-        events = Settings.zbx_api.get_events(trigger_ids)
+        events = self.zbx.get_events(trigger_ids)
 
         for problem in problems:
             for event in events:

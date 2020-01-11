@@ -21,16 +21,17 @@ class MainWindow(QMainWindow):
         self.problem_table_timer.timeout.connect(self.update_problem_table_worker)
         self.problem_table_timer.start()
 
-
-
     def init_ui(self):
+        self._create_menu()
         self._create_central_widget()
         self.setStatusBar(Statusbar())
 
         self.threadpool = QThreadPool()
         print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
-
+    def _create_menu(self):
+        self.menu = self.menuBar().addMenu("&Menu")
+        self.menu.addAction('&Exit', self.close)
 
     def _create_central_widget(self):
         """
