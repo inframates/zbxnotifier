@@ -1,6 +1,7 @@
 import sys
 from zbxnotifier.modules.windowelements.main_window import MainWindow
 from zbxnotifier.modules.settings import Settings
+from zbxnotifier.modules.zabbix.zabbix import ZabbixConnection
 from PyQt5.QtWidgets import QApplication
 
 

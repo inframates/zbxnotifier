@@ -10,9 +10,12 @@ class ZabbixConnection:
     error = False
     error_message = ""
 
-    def __init__(self):
+    @staticmethod
+    def init():
         if ZabbixConnection.connection is None:
             try:
+                ZabbixConnection.error = True
+                ZabbixConnection.error_message = "Connecting..."
                 ZabbixConnection.connection = ZabbixAPI(url=Settings.config.get('ZabbixSettings', 'server'), user=Settings.config.get('ZabbixSettings', 'username'), password=Settings.config.get('ZabbixSettings', 'password'))
                 ZabbixConnection.token = ZabbixConnection.connection.auth
                 ZabbixConnection.error_message = ""
@@ -20,6 +23,14 @@ class ZabbixConnection:
             except ZabbixAPIException as e:
                 ZabbixConnection.error = True
                 ZabbixConnection.error_message = e.data
+
+    @staticmethod
+    def re_init():
+        ZabbixConnection.connection = None
+        ZabbixConnection.token = None
+        ZabbixConnection.error = True
+        ZabbixConnection.error_message = "Connection re-initializing"
+        ZabbixConnection.init()
 
     @staticmethod
     def get_status_desc():
@@ -39,6 +50,9 @@ class ZabbixConnection:
 
 
 class Zabbix:
+
+    def __init__(self):
+        ZabbixConnection.init()
 
     def get_problems(self):
         """

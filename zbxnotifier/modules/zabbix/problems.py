@@ -27,7 +27,7 @@ class ProblemsWorker(QRunnable):
 
     def get_problems(self):
         # Get all the problems
-        if not ZabbixConnection().is_connected():
+        if not ZabbixConnection.is_connected():
             print("We are not connected to the Zabbix server.")
             return []
 
