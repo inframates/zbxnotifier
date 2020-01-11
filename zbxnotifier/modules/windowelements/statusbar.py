@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLabel, QPushButton, QDialog, QFormLayout, QVBoxLayout, QLineEdit, QDialogButtonBox
 from PyQt5.QtWidgets import QStatusBar
 from zbxnotifier.modules.zabbix.zabbix import ZabbixConnection
+from zbxnotifier.modules.settings import Settings
 from PyQt5.QtCore import QRunnable, pyqtSlot, pyqtSignal, QObject
 
 
@@ -25,14 +26,50 @@ class Statusbar(QStatusBar):
     def __init__(self):
         super().__init__()
         self.status_widget = QLabel("ZBX Status: " + ZabbixConnection.get_status_desc())
+        self.settings_button = QPushButton("SETTINGS")
+        self.settings_button.clicked.connect(self.settings_clicked)
+
+        self.setup_settings_dialog()
+
         self.init_elements()
+
+    def setup_settings_dialog(self):
+        self.settings_dialog = QDialog()
+        self.settings_dialog.setWindowTitle("Settings")
+
+        dialog_layout = QVBoxLayout()
+        form_layout = QFormLayout()
+        form_layout.addRow('Zabbix Server URL', QLineEdit(Settings.config.get('ZabbixSettings', 'server')))
+        form_layout.addRow('Zabbix Username', QLineEdit(Settings.config.get('ZabbixSettings', 'username')))
+
+
+        buttons = QDialogButtonBox(QDialogButtonBox.Cancel | QDialogButtonBox.Ok )
+
+        buttons.clicked.connect(self.settings_dialog.accept)
+        buttons.accepted.connect(self.settings_ok_clicked)
+
+        dialog_layout.addLayout(form_layout)
+        dialog_layout.addWidget(buttons)
+
+        dialog_layout.addWidget(QLabel("The supplied username must exist in the Windows Credential store under the 'zabbix' service!"))
+
+        self.settings_dialog.setLayout(dialog_layout)
+
+    def settings_ok_clicked(self):
+        print("OK")
+
+    def settings_clicked(self):
+        print("cica")
+        self.settings_dialog.show()
 
     def update_elements(self):
         self.status_widget.setText("ZBX Status: " + ZabbixConnection.get_status_desc())
         self.status_widget.update()
 
     def init_elements(self):
+        self.addWidget(self.settings_button)
         self.addWidget(self.status_widget)
+
 
 
 

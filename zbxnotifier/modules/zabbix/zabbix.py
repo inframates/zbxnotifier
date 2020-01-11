@@ -13,8 +13,10 @@ class ZabbixConnection:
     def __init__(self):
         if ZabbixConnection.connection is None:
             try:
-                ZabbixConnection.connection = ZabbixAPI(url=Settings.zabbix_url, user=Settings.zabbix_user, password=Settings.zabbix_password)
+                ZabbixConnection.connection = ZabbixAPI(url=Settings.config.get('ZabbixSettings', 'server'), user=Settings.config.get('ZabbixSettings', 'username'), password=Settings.config.get('ZabbixSettings', 'password'))
                 ZabbixConnection.token = ZabbixConnection.connection.auth
+                ZabbixConnection.error_message = ""
+                ZabbixConnection.error = False
             except ZabbixAPIException as e:
                 ZabbixConnection.error = True
                 ZabbixConnection.error_message = e.data

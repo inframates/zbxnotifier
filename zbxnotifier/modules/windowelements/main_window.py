@@ -12,8 +12,8 @@ class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.setWindowTitle(Settings.main_window_title)
-        self.window().resize(Settings.main_window_width, Settings.main_window_height)
+        self.setWindowTitle(Settings.config.get('WindowSettings', 'title'))
+        self.window().resize(int(Settings.config.get('WindowSettings', 'width')), int(Settings.config.get('WindowSettings', 'height')))
 
         self.init_ui()
 
@@ -23,21 +23,16 @@ class MainWindow(QMainWindow):
         self.problem_table_timer.start()
 
         self.statusbar_timer = QTimer()
-        self.statusbar_timer.setInterval(1000)
+        self.statusbar_timer.setInterval(500)
         self.statusbar_timer.timeout.connect(self.update_bar_worker)
         self.statusbar_timer.start()
 
     def init_ui(self):
-        self._create_menu()
         self._create_central_widget()
         self._create_statusbar()
 
         self.threadpool = QThreadPool()
         print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
-
-    def _create_menu(self):
-        self.menu = self.menuBar().addMenu("&Menu")
-        self.menu.addAction('&Exit', self.close)
 
     def _create_central_widget(self):
         """
