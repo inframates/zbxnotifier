@@ -36,11 +36,7 @@ class Settings:
         Settings.config.set('ZabbixSettings', 'username', '')
         Settings.config.set('ZabbixSettings', 'server', '')
 
-        password = keyring.get_password("zabbix", Settings.config.get('ZabbixSettings', 'username'))
-        if password is None:
-            print("Password must be set in the Windows Credential store.")
-            password = ''
-        Settings.config.set('ZabbixSettings', 'password', password)
+        Settings.config.set('ZabbixSettings', 'password', keyring.get_password("zabbix", Settings.config.get('ZabbixSettings', 'username')))
 
         try:
             os.makedirs(Settings.user_data_dir)
@@ -57,6 +53,9 @@ class Settings:
             Settings.config.write(configfile)
 
         Settings.config.set('ZabbixSettings', 'password', temp_pw)
+
+        # But we want to store the password on the keyring
+        keyring.set_password("zabbix", Settings.config.get('ZabbixSettings', 'username'), temp_pw)
 
     @staticmethod
     def read_config_from_file():

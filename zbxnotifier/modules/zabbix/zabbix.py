@@ -6,10 +6,13 @@ import time
 
 
 class ZabbixConnection:
+
     connection = None
     token = None
+
     error = False
     error_message = ""
+
     retry_num = 0
     backoff_num = 1
 
@@ -23,7 +26,7 @@ class ZabbixConnection:
             ZabbixConnection.error = True
             ZabbixConnection.error_message = "Connecting..."
 
-            if ZabbixConnection.connection is None:
+            if ZabbixConnection.connection is None or ZabbixConnection.error is True:
                 print("Starting Login Process")
                 url = Settings.config.get('ZabbixSettings', 'server')
                 username = Settings.config.get('ZabbixSettings', 'username')
@@ -33,7 +36,6 @@ class ZabbixConnection:
                     ZabbixConnection.error = True
                     ZabbixConnection.error_message = "Please set Username, Password and Server URL in Configuration!"
                     continue
-
                 try:
                     ZabbixConnection.connection = ZabbixAPI(url=url, user=username, password=password)
                 except ZabbixAPIException as e:

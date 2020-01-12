@@ -28,6 +28,15 @@ class Statusbar(QStatusBar):
         self.status_widget = QLabel("ZBX Status: " + ZabbixConnection.get_status_desc())
         self.settings_button = QPushButton("SETTINGS")
         self.settings_button.clicked.connect(self.settings_clicked)
+
+        # Create elements
+        self.settings_dialog = None
+
+        self.qline_zbx_server = None
+        self.qline_zbx_username = None
+        self.qline_zbx_password = None
+
+        # Initializing elements
         self.setup_settings_dialog()
         self.init_elements()
 
@@ -39,14 +48,20 @@ class Statusbar(QStatusBar):
 
         self.qline_zbx_server = QLineEdit(Settings.config.get('ZabbixSettings', 'server'))
         self.qline_zbx_username = QLineEdit(Settings.config.get('ZabbixSettings', 'username'))
+
+        password_input = QLineEdit(Settings.config.get('ZabbixSettings', 'password'))
+        password_input.setEchoMode(QLineEdit.Password)
+        self.qline_zbx_password = password_input
         form_layout = QFormLayout()
+
         form_layout.addRow('Zabbix Server URL', self.qline_zbx_server)
         form_layout.addRow('Zabbix Username', self.qline_zbx_username)
+        form_layout.addRow('Zabbix Password', self.qline_zbx_password)
 
 
         buttons = QDialogButtonBox(QDialogButtonBox.Cancel | QDialogButtonBox.Ok )
 
-        buttons.clicked.connect(self.settings_dialog.accept, )
+        buttons.clicked.connect(self.settings_dialog.accept)
         buttons.accepted.connect(self.settings_ok_clicked)
 
         dialog_layout.addLayout(form_layout)
@@ -60,6 +75,7 @@ class Statusbar(QStatusBar):
     def settings_ok_clicked(self):
         Settings.config.set('ZabbixSettings', 'username', self.qline_zbx_username.text())
         Settings.config.set('ZabbixSettings', 'server', self.qline_zbx_server.text())
+        Settings.config.set('ZabbixSettings', 'password', self.qline_zbx_password.text())
         Settings.save_running_config()
         ZabbixConnection.re_init()
 
