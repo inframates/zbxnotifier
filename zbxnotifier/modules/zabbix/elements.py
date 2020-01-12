@@ -55,6 +55,7 @@ class Host:
     def __repr__(self):
         return self.__str__()
 
+
 class Event:
     def __init__(self, triggerid, eventid, hosts):
         self.eventid = eventid

@@ -3,10 +3,13 @@ from zbxnotifier.modules.settings import Settings
 from zbxnotifier.modules.zabbix.elements import Trigger, Problem, Event, Host
 from pyzabbix.api import ZabbixAPIException
 import time
+import logging
 
+logger = logging.getLogger('basic')
 
 class ZabbixConnection:
 
+    connect = True
     connection = None
     token = None
 
@@ -17,53 +20,83 @@ class ZabbixConnection:
     backoff_num = 1
 
     @staticmethod
-    def connect_thread():
-        while True:
-            # Not to rush
+    def get_user_data(logger):
+        # Get user/server related data
+        url = Settings.config.get('ZabbixSettings', 'server')
+        username = Settings.config.get('ZabbixSettings', 'username')
+        password = Settings.config.get('ZabbixSettings', 'password')
+
+        # Check, if the required data is even set.
+        if url == "" or username == "" or password == "":
+            logger.warning("Url of Username or Password is empty. Auth process is disabled until further user changes.")
+            ZabbixConnection.error = True
+            ZabbixConnection.connect = False
+            ZabbixConnection.error_message = "Please set Username, Password and Server URL in Settings!"
+            raise ValueError
+
+        return url, username, password
+
+    @staticmethod
+    def connect_thread(logger, queue):
+        logger.info("Starting connection thread")
+        while queue.empty():
             time.sleep(2)
 
-            # Set message, as we are connecting
-            ZabbixConnection.error = True
-            ZabbixConnection.error_message = "Connecting..."
+            # The whole authentication process can be disabled
+            if ZabbixConnection.connect is False:
+                continue
+
+            try:
+                url, username, password = ZabbixConnection.get_user_data(logger)
+            except ValueError:
+                continue
 
             if ZabbixConnection.connection is None or ZabbixConnection.error is True:
-                print("Starting Login Process")
-                url = Settings.config.get('ZabbixSettings', 'server')
-                username = Settings.config.get('ZabbixSettings', 'username')
-                password = Settings.config.get('ZabbixSettings', 'password')
+                # Set message, as we are connecting
+                ZabbixConnection.error = True
+                ZabbixConnection.error_message = "Connecting..."
 
-                if url == "" or username == "" or password == "":
-                    ZabbixConnection.error = True
-                    ZabbixConnection.error_message = "Please set Username, Password and Server URL in Configuration!"
-                    continue
+                logger.debug("New login cycle has been started to server: " + str(url))
                 try:
+                    logger.debug("Executing ZabbixAPI connection")
                     ZabbixConnection.connection = ZabbixAPI(url=url, user=username, password=password)
                 except ZabbixAPIException as e:
+                    logger.warning("Failed to connect to the ZabbixAPI: " + str(e.data))
                     ZabbixConnection.error = True
                     ZabbixConnection.error_message = e.data
                     ZabbixConnection.retry_num += 1
                 except Exception as e:
+                    logger.warning("Failed to connect to the Server: " + str(e))
                     ZabbixConnection.error = True
                     ZabbixConnection.error_message = str(e)
                     ZabbixConnection.retry_num += 1
                 else:
+                    logger.info("Successfully connected to the server: " + str(url))
                     ZabbixConnection.token = ZabbixConnection.connection.auth
                     ZabbixConnection.error_message = ""
                     ZabbixConnection.error = False
 
+                    ZabbixConnection.retry_num = 0
+                    ZabbixConnection.backoff_num = 1
+
                 if ZabbixConnection.retry_num / ZabbixConnection.backoff_num > 3:
-                    print("Backoff limit reached.")
+                    logger.debug("Backoff limit reached. Waiting for 10 seconds to retry. ")
                     ZabbixConnection.error_message += " Backoff limit reached, retying after 10 seconds.."
                     time.sleep(10)
                     ZabbixConnection.backoff_num += 1
 
+        logger.info("Shutting down ZabbixAPI Connection...")
+        ZabbixConnection.connection.user.logout()
+        logger.info("Connection shut down.")
 
     @staticmethod
     def re_init():
+        logger.info("Re-initializing Zabbix connection triggered.")
         ZabbixConnection.connection = None
         ZabbixConnection.token = None
         ZabbixConnection.error = True
         ZabbixConnection.error_message = "Connection re-initializing"
+        ZabbixConnection.connect = True
 
     @staticmethod
     def get_status_desc():

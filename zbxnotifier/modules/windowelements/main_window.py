@@ -3,13 +3,17 @@ from zbxnotifier.modules.windowelements.zbx_problem_table import ZbxProblemTable
 from zbxnotifier.modules.zabbix.problems import ProblemsWorker
 from zbxnotifier.modules.windowelements.statusbar import StatusWorker
 from zbxnotifier.modules.windowelements.statusbar import Statusbar
-
+import logging
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import QTimer, QThreadPool
 
+logger = logging.getLogger('basic')
+
 
 class MainWindow(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, signal_queue, parent=None):
+        self.signal_queue = signal_queue
+        logger.info("Initializing main window and elements")
         super().__init__(parent)
 
         self.setWindowTitle(Settings.config.get('WindowSettings', 'title'))
@@ -32,7 +36,7 @@ class MainWindow(QMainWindow):
         self._create_statusbar()
 
         self.threadpool = QThreadPool()
-        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
+        logger.info("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
     def _create_central_widget(self):
         """
@@ -66,6 +70,10 @@ class MainWindow(QMainWindow):
         self.update()
 
         self.size()
+
+    def closeEvent(self, *args, **kwargs):
+        logger.info("Shutting down the application")
+        self.signal_queue.put(object())
 
 
 

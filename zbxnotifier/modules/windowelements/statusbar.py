@@ -58,7 +58,6 @@ class Statusbar(QStatusBar):
         form_layout.addRow('Zabbix Username', self.qline_zbx_username)
         form_layout.addRow('Zabbix Password', self.qline_zbx_password)
 
-
         buttons = QDialogButtonBox(QDialogButtonBox.Cancel | QDialogButtonBox.Ok )
 
         buttons.clicked.connect(self.settings_dialog.accept)
@@ -68,7 +67,7 @@ class Statusbar(QStatusBar):
         dialog_layout.addWidget(QLabel("Clickin 'OK' will re-initialize the connection!"))
         dialog_layout.addWidget(buttons)
 
-        dialog_layout.addWidget(QLabel("The supplied username must exist in the Windows Credential store under the 'zabbix' service!"))
+        dialog_layout.addWidget(QLabel("Your password will be stored on your keyring!"))
 
         self.settings_dialog.setLayout(dialog_layout)
 
