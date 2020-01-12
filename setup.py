@@ -1,0 +1,27 @@
+from distutils.core import setup
+setup(
+  name = 'zbxnotifier',
+  packages = ['zbxnotifier'],
+  version = '0.1',
+  license='gpl-3.0',
+  description = 'Simple Zabbix Notifier Desktop Application',
+  author = 'Daniel Kovacs',
+  author_email = 'kovacsdanielhun@gmail.com',
+  url = 'https://github.com/inframates/zbxnotifier',
+  download_url = 'https://github.com/inframates/zbxnotifier/archive/v_01.tar.gz',
+  keywords = ['Zabbix', 'desktop', 'monitoring'],
+  install_requires=[
+        'PyQt5',
+        'py-zabbix',
+        'keyring',
+        'appdirs',
+        'configparser'
+      ],
+  classifiers=[
+    'Development Status :: 3 - Alpha',      # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
+    'Intended Audience :: Developers',
+    'Topic :: Monitoring',
+    'License :: OSI Approved :: GNU General Public License v3.0',
+    'Programming Language :: Python :: 3',
+  ],
+)

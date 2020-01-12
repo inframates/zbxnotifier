@@ -43,12 +43,14 @@ class Statusbar(QStatusBar):
         form_layout.addRow('Zabbix Server URL', self.qline_zbx_server)
         form_layout.addRow('Zabbix Username', self.qline_zbx_username)
 
+
         buttons = QDialogButtonBox(QDialogButtonBox.Cancel | QDialogButtonBox.Ok )
 
         buttons.clicked.connect(self.settings_dialog.accept, )
         buttons.accepted.connect(self.settings_ok_clicked)
 
         dialog_layout.addLayout(form_layout)
+        dialog_layout.addWidget(QLabel("Clickin 'OK' will re-initialize the connection!"))
         dialog_layout.addWidget(buttons)
 
         dialog_layout.addWidget(QLabel("The supplied username must exist in the Windows Credential store under the 'zabbix' service!"))

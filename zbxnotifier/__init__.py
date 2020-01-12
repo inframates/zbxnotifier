@@ -1,0 +1,1 @@
+from zbxnotifier.app import MainWindow
