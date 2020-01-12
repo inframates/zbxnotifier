@@ -1,12 +1,4 @@
-import sys
-
-if sys.platform == 'darwin':
-    import keyring.backends.OS_X
-    keyring.set_keyring(keyring.backends.OS_X.Keyring())
-else:
-    import keyring.backends.Windows
-    keyring.set_keyring(keyring.backends.Windows.WinVaultKeyring())
-
+import keyring
 from appdirs import *
 import configparser
 import os.path
@@ -36,15 +28,15 @@ class Settings:
         Settings.config = configparser.ConfigParser()
 
         Settings.config.add_section('WindowSettings')
-        Settings.config.set('WindowSettings', 'title', "RoboAlert 3000")
+        Settings.config.set('WindowSettings', 'title', "Zabbix Desktop Notification Tool")
         Settings.config.set('WindowSettings', 'height', str(500))
         Settings.config.set('WindowSettings', 'width', str(600))
 
         Settings.config.add_section('ZabbixSettings')
-        Settings.config.set('ZabbixSettings', 'username', 'Admin')
-        Settings.config.set('ZabbixSettings', 'server', 'http://192.168.1.160')
+        Settings.config.set('ZabbixSettings', 'username', '')
+        Settings.config.set('ZabbixSettings', 'server', '')
 
-        password = keyring.get_password("zabbix", "Admin")
+        password = keyring.get_password("zabbix", Settings.config.get('ZabbixSettings', 'username'))
         if password is None:
             print("Password must be set in the Windows Credential store.")
             password = ''
