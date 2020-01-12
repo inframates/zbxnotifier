@@ -10,7 +10,7 @@ setup(
   author = 'Daniel Kovacs',
   author_email = 'kovacsdanielhun@gmail.com',
   url = 'https://github.com/inframates/zbxnotifier',
-  download_url = 'https://github.com/inframates/zbxnotifier/archive/v_01.tar.gz',
+  download_url = 'https://github.com/inframates/zbxnotifier/archive/0.1.tar.gz',
   keywords = ['Zabbix', 'desktop', 'monitoring'],
   install_requires=[
         'PyQt5',
