@@ -4,13 +4,13 @@ from distutils.core import setup
 setup(
   name = 'zbxnotifier',
   packages = ['zbxnotifier', 'zbxnotifier/modules', 'zbxnotifier/modules/windowelements', 'zbxnotifier/modules/zabbix'],
-  version = '0.5.2',
+  version = '0.5.3',
   license='gpl-3.0',
   description = 'Simple Zabbix Notifier Desktop Application',
   author = 'Daniel Kovacs',
   author_email = 'kovacsdanielhun@gmail.com',
   url = 'https://github.com/inframates/zbxnotifier',
-  download_url = 'https://github.com/inframates/zbxnotifier/archive/0.5.2.tar.gz',
+  download_url = 'https://github.com/inframates/zbxnotifier/archive/0.5.3.tar.gz',
   keywords = ['Zabbix', 'desktop', 'monitoring'],
   install_requires=[
         'PyQt5',
