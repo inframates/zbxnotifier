@@ -3,3 +3,4 @@ py-zabbix
 keyring
 appdirs
 configparser
+win10toast

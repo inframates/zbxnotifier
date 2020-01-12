@@ -1,5 +1,6 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from zbxnotifier.modules.alertgenerator import AlertGenerator
 
 
 class ZbxProblemTable(QTableWidget):
@@ -11,6 +12,8 @@ class ZbxProblemTable(QTableWidget):
 
         self.problems = []
         self.init_table()
+
+        self.alert_generator = AlertGenerator()
 
     def init_table(self):
         """
@@ -45,14 +48,26 @@ class ZbxProblemTable(QTableWidget):
             return [228, 89, 89]
 
     def update_data(self, problems):
-        self.problems = problems
-        self._set_rows()
-        self._refresh_data()
+        """
+        Updates data list only, if there's a difference in it.
+        :param problems:
+        :return:
+        """
+        if self.problems is not None and problems is not None:
+            self.problems.sort()
+            problems.sort()
+
+        if self.problems != problems:
+            self.alert_generator.add_alert("New Zabbix alert created.", "Please check the alerts for more information.")
+
+            self.problems = problems
+            self._set_rows()
+            self._refresh_data()
 
     def _refresh_data(self):
         row = 0
         for problem in self.problems:
-            severity = problem.trigger.severity
+            severity = problem.trigger.severity_desc
             hostnames = []
             for host in problem.event.hosts:
                 hostnames.append(host.hostname)
@@ -73,5 +88,5 @@ class ZbxProblemTable(QTableWidget):
         self.show()
 
     def _set_rows(self):
-        self.setRowCount(len(self.problems)+1)
+        self.setRowCount(len(self.problems))
 

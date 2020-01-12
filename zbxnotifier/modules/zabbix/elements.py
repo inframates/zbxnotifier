@@ -13,6 +13,19 @@ class Problem:
     def __repr__(self):
         return self.__str__()
 
+    def __eq__(self, other):
+        if self.triggerid == other.triggerid and self.trigger == other.trigger and self.event == other.event:
+            return True
+        return False
+
+    def __lt__(self, other):
+        if self.triggerid > other.triggerid:
+            return True
+        return False
+
+    def __hash__(self):
+        return int(self.triggerid)
+
 
 class Trigger:
     def __init__(self, triggerid, description, severity, lastchange_timestamp):
@@ -23,6 +36,11 @@ class Trigger:
 
         self.severity_desc = None
         self.set_priority()
+
+    def __eq__(self, other):
+        if self.triggerid == other.triggerid and self.description == other.description and self.severity == other.severity and self.lastchange_timestamp == other.lastchange_timestamp:
+            return True
+        return False
 
     def set_priority(self):
         if self.severity == '0':
@@ -55,11 +73,21 @@ class Host:
     def __repr__(self):
         return self.__str__()
 
+    def __eq__(self, other):
+        if self.hostname == other.hostname and self.hostid == other.hostid:
+            return True
+        return False
+
 
 class Event:
     def __init__(self, triggerid, eventid, hosts):
         self.eventid = eventid
         self.triggerid = triggerid
         self.hosts = hosts
+
+    def __eq__(self, other):
+        if self.eventid == other.eventid and self.triggerid == other.triggerid and self.hosts == other.hosts:
+            return True
+        return False
 
 

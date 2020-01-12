@@ -130,6 +130,7 @@ class Zabbix:
         problems = []
         for problem in data:
             problems.append(Problem(problem.get('objectid'), problem.get('clock')))
+
         return problems
 
     def get_events(self, trigger_ids):

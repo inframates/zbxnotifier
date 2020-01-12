@@ -38,6 +38,7 @@ class Settings:
 
         Settings.config.add_section('Application')
         Settings.config.set('Application', 'LogLevel', "INFO")
+        Settings.config.set('Application', 'AlertTimeout', "5")
 
         Settings.config.add_section('WindowSettings')
         Settings.config.set('WindowSettings', 'title', "Zabbix Desktop Notification Tool")

@@ -7,6 +7,7 @@ from zbxnotifier.modules.windowelements.main_window import MainWindow
 from zbxnotifier.modules.settings import Settings
 from zbxnotifier.modules.zabbix.zabbix import ZabbixConnection
 from zbxnotifier.modules.logging import Logging
+from zbxnotifier.modules.alertgenerator import AlertGenerator
 import queue
 
 
@@ -21,6 +22,8 @@ class Application:
         Logging.init()
         Settings.init_rest_config()
         Logging.change_level(Settings.config.get('Application', 'LogLevel'))
+
+        AlertGenerator.init(signal_queue)
 
         app = QApplication(sys.argv)
 
