@@ -1,4 +1,12 @@
-import keyring
+import sys
+
+if sys.platform == 'darwin':
+    import keyring.backends.OS_X
+    keyring.set_keyring(keyring.backends.OS_X.Keyring())
+else:
+    import keyring.backends.Windows
+    keyring.set_keyring(keyring.backends.Windows.WinVaultKeyring())
+
 from appdirs import *
 import configparser
 import os.path

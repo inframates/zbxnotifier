@@ -1,7 +1,9 @@
 from distutils.core import setup
+
+
 setup(
   name = 'zbxnotifier',
-  packages = ['zbxnotifier'],
+  packages = ['zbxnotifier', 'zbxnotifier/modules', 'zbxnotifier/modules/windowelements', 'zbxnotifier/modules/zabbix'],
   version = '0.1',
   license='gpl-3.0',
   description = 'Simple Zabbix Notifier Desktop Application',
@@ -13,7 +15,7 @@ setup(
   install_requires=[
         'PyQt5',
         'py-zabbix',
-        'keyring',
+        'keyring<=18',
         'appdirs',
         'configparser'
       ],
@@ -21,7 +23,7 @@ setup(
     'Development Status :: 3 - Alpha',      # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
     'Intended Audience :: Developers',
     'Topic :: System :: Monitoring',
-    'License :: OSI Approved :: GNU General Public License v3.0',
+    'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
     'Programming Language :: Python :: 3',
   ],
 )

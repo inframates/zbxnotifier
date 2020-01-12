@@ -1,6 +1,6 @@
 from pyzabbix.api import ZabbixAPI
 from zbxnotifier.modules.settings import Settings
-from modules.zabbix.elements import Trigger, Problem, Event, Host
+from zbxnotifier.modules.zabbix.elements import Trigger, Problem, Event, Host
 from pyzabbix.api import ZabbixAPIException
 
 
