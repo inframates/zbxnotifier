@@ -17,7 +17,8 @@ setup(
         'py-zabbix',
         'keyring<=18',
         'appdirs',
-        'configparser'
+        'configparser',
+        'win10toast'
       ],
   scripts = ['scripts/ZBXNotifier.pyw'],
   classifiers =[

@@ -1,6 +1,9 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from zbxnotifier.modules.alertgenerator import AlertGenerator
+import logging
+
+logger = logging.getLogger('basic')
 
 
 class ZbxProblemTable(QTableWidget):
@@ -33,7 +36,9 @@ class ZbxProblemTable(QTableWidget):
 
         self._set_rows()
 
-    def _get_bg_color(self, severity):
+    @staticmethod
+    def _get_bg_color(severity):
+        logger.debug("BG Color. severity: " + str(severity))
         if severity == '1':
             return [151, 170, 179]
         elif severity == '2':
@@ -46,6 +51,8 @@ class ZbxProblemTable(QTableWidget):
             return [233, 118, 89]
         elif severity == '6':
             return [228, 89, 89]
+        logger.critical("Invalid severity received, can't decode to color: " + str(severity))
+        return [0, 0, 0]
 
     def update_data(self, problems):
         """
@@ -73,7 +80,7 @@ class ZbxProblemTable(QTableWidget):
                 hostnames.append(host.hostname)
 
             severity = QTableWidgetItem(severity)
-            severity.setBackground(QColor(*self._get_bg_color(problem.trigger.severity)))
+            severity.setBackground(QColor(*ZbxProblemTable._get_bg_color(problem.trigger.severity)))
 
             hostname = QTableWidgetItem(', '.join(hostnames))
             problem_clock = QTableWidgetItem(problem.clock)
