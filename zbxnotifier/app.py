@@ -20,7 +20,6 @@ class Application:
 
         Settings.init_basic_config()
         Logging.init()
-        Settings.init_rest_config()
         Logging.change_level(Settings.config.get('Application', 'LogLevel'))
 
         AlertGenerator.init(signal_queue)

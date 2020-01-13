@@ -65,6 +65,11 @@ class ZabbixConnection:
                     ZabbixConnection.error = True
                     ZabbixConnection.error_message = e.data
                     ZabbixConnection.retry_num += 1
+                    if "name or password is incorr" in e.data:
+                        logger.critical("Login name or password is incorrect. Logging process is disabled now until user changes credentials.")
+                        ZabbixConnection.error_message += " Logging process disabled until user changes credentials in settings."
+                        ZabbixConnection.connect = False
+                        continue
                 except Exception as e:
                     logger.warning("Failed to connect to the Server: " + str(e))
                     ZabbixConnection.error = True
