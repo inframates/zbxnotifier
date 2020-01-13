@@ -22,9 +22,6 @@ class Settings:
         Settings.user_data_config_path = Settings.user_data_dir + '/zbxnotifier.ini'
         Settings.logfile_path = Settings.user_data_dir + '/zbxnotifier.log'
 
-    @staticmethod
-    def init_rest_config():
-        logger.info("Getting configuration.")
         if not os.path.exists(Settings.user_data_config_path):
             Settings.create_default_config()
             Settings.save_running_config()
@@ -85,4 +82,9 @@ class Settings:
         logger.info("Reading configuration from file: " + str(Settings.user_data_config_path))
         Settings.config = configparser.ConfigParser()
         Settings.config.read(Settings.user_data_dir + '/zbxnotifier.ini')
-        Settings.config.set('ZabbixSettings', 'password', keyring.get_password("zabbix", "Admin"))
+
+        try:
+            Settings.config.set('ZabbixSettings', 'password', keyring.get_password("zabbix", "Admin"))
+        except TypeError:
+            logger.warning("Password not found on keyring, going with empty password.")
+            Settings.config.set('ZabbixSettings', 'password', '')
