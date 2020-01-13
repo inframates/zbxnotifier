@@ -17,9 +17,9 @@ Supported platforms and notification methods as of now:
 Some images
 ===========
 
-![Main](https://github.com/inframates/zbxnotifier/documentation/image1.png)
+![Main](https://github.com/inframates/zbxnotifier/blob/master/documentation/image1.png)
 
-![Main](https://github.com/inframates/zbxnotifier/documentation/settings.png)
+![Settings](https://github.com/inframates/zbxnotifier/blob/master/documentation/settings.png)
 
 Installation
 ============

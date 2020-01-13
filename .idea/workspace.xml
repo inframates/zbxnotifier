@@ -2,22 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34adb052-5be5-4a61-86ee-d9a21c3f4787" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/zbxnotifier.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/image1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/settings.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zbxnotifier/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/zbxnotifier/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zbxnotifier/modules/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/zbxnotifier/modules/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zbxnotifier/modules/windowelements/zbx_problem_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/zbxnotifier/modules/windowelements/zbx_problem_table.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zbxnotifier/modules/zabbix/zabbix.py" beforeDir="false" afterPath="$PROJECT_DIR$/zbxnotifier/modules/zabbix/zabbix.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,10 +63,19 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="153">
-                <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
+              <first_editor relative-caret-position="357">
+                <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
               </first_editor>
               <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="6" lean-forward="true" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -106,15 +102,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="382">
               <caret line="51" column="46" selection-start-line="51" selection-start-column="39" selection-end-line="51" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/logging/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="1058" selection-start-line="1058" selection-end-line="1058" />
             </state>
           </provider>
         </entry>
@@ -189,7 +176,6 @@
         <option value="$PROJECT_DIR$/setup.cfg" />
         <option value="$PROJECT_DIR$/LICENSE.txt" />
         <option value="$PROJECT_DIR$/cli.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/zbxnotifier_app.py" />
         <option value="$PROJECT_DIR$/ZBXNotifier.py" />
         <option value="$PROJECT_DIR$/zbxnotifier/__main__.py" />
@@ -207,6 +193,7 @@
         <option value="$PROJECT_DIR$/zbxnotifier/modules/settings.py" />
         <option value="$PROJECT_DIR$/zbxnotifier/modules/zabbix/zabbix.py" />
         <option value="$PROJECT_DIR$/zbxnotifier/modules/windowelements/zbx_problem_table.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -413,7 +400,7 @@
       <workItem from="1578736219503" duration="19259000" />
       <workItem from="1578774627006" duration="5632000" />
       <workItem from="1578820486313" duration="24565000" />
-      <workItem from="1578939841780" duration="1860000" />
+      <workItem from="1578939841780" duration="2064000" />
     </task>
     <task id="LOCAL-00001" summary="Initial">
       <created>1578609042066</created>
@@ -534,11 +521,18 @@
       <option name="project" value="LOCAL" />
       <updated>1578868594609</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Added:&#10;- Extended documentation&#10;&#10;Fixes:&#10;- #1 Missing requirement from package bug&#10;- #2 Missing log file on first start &#10;- #3 Settings fail on startup - username/password missing from keyring&#10;- #4 Login backoff on invalid password must be raised">
+      <created>1578941785718</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1578941785718</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65697000" />
+    <option name="totallyTimeSpent" value="65901000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -588,7 +582,8 @@
     <MESSAGE value="- Added proper logging&#10;- Removed prints&#10;- Added signaling for the threads for the shutdown" />
     <MESSAGE value="Added win10 toast alerting" />
     <MESSAGE value="New version release" />
-    <option name="LAST_COMMIT_MESSAGE" value="New version release" />
+    <MESSAGE value="Added:&#10;- Extended documentation&#10;&#10;Fixes:&#10;- #1 Missing requirement from package bug&#10;- #2 Missing log file on first start &#10;- #3 Settings fail on startup - username/password missing from keyring&#10;- #4 Login backoff on invalid password must be raised" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added:&#10;- Extended documentation&#10;&#10;Fixes:&#10;- #1 Missing requirement from package bug&#10;- #2 Missing log file on first start &#10;- #3 Settings fail on startup - username/password missing from keyring&#10;- #4 Login backoff on invalid password must be raised" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/zbxnotifier$zbxnotifier__1_.coverage" NAME="zbxnotifier (1) Coverage Results" MODIFIED="1578852626333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts" />
@@ -606,13 +601,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -813,11 +801,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="6" lean-forward="true" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="153">
-            <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
+          <first_editor relative-caret-position="357">
+            <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
           </first_editor>
           <second_editor />
         </state>
