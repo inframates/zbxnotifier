@@ -81,12 +81,10 @@ class ZbxProblemTable(QTableWidget):
 
     def filter_problems(self, new_problems):
         filtered = []
-        try:
-            for problem in new_problems:
-                if int(problem.trigger.severity) >= int(Settings.config.get('AlertFilter', 'min-severity')):
-                    filtered.append(problem)
-        except Exception as e:
-            print(e)
+        for problem in new_problems:
+            if int(problem.trigger.severity) >= int(Settings.config.get('AlertFilter', 'min-severity')):
+                filtered.append(problem)
+        return filtered
 
     def _refresh_data(self):
         row = 0
