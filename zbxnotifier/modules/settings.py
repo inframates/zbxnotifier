@@ -42,6 +42,14 @@ class Settings:
         Settings.config.set('WindowSettings', 'height', str(500))
         Settings.config.set('WindowSettings', 'width', str(600))
 
+        Settings.config.add_section('ProblemColors')
+        Settings.config.set('ProblemColors', 'not_classified', '151:170:179')
+        Settings.config.set('ProblemColors', 'information', '116:153:255')
+        Settings.config.set('ProblemColors', 'warning', '255:200:89')
+        Settings.config.set('ProblemColors', 'average', '255:160:89')
+        Settings.config.set('ProblemColors', 'high', '233:118:89')
+        Settings.config.set('ProblemColors', 'disaster', '228:89:89')
+
         Settings.config.add_section('ZabbixSettings')
         Settings.config.set('ZabbixSettings', 'username', '')
         Settings.config.set('ZabbixSettings', 'server', '')
