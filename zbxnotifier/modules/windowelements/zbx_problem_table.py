@@ -1,6 +1,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from zbxnotifier.modules.alertgenerator import AlertGenerator
+from zbxnotifier.modules.settings import Settings
 import logging
 
 logger = logging.getLogger('basic')
@@ -37,20 +38,27 @@ class ZbxProblemTable(QTableWidget):
         self._set_rows()
 
     @staticmethod
+    def _color_str_to_list(color):
+        colors = []
+        for color in color.split(':'):
+            colors.append(int(color))
+        return colors
+
+    @staticmethod
     def _get_bg_color(severity):
         logger.debug("BG Color. severity: " + str(severity))
-        if severity == '1':
-            return [151, 170, 179]
+        if severity == '0':
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'not_classified'))
+        elif severity == '1':
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'information'))
         elif severity == '2':
-            return [116, 153, 255]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'warning'))
         elif severity == '3':
-            return [255, 200, 89]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'average'))
         elif severity == '4':
-            return [255, 160, 89]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'high'))
         elif severity == '5':
-            return [233, 118, 89]
-        elif severity == '6':
-            return [228, 89, 89]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'disaster'))
         logger.critical("Invalid severity received, can't decode to color: " + str(severity))
         return [0, 0, 0]
 
@@ -67,9 +75,18 @@ class ZbxProblemTable(QTableWidget):
         if self.problems != problems:
             self.alert_generator.add_alert("New Zabbix alert created.", "Please check the alerts for more information.")
 
-            self.problems = problems
+            self.problems = self.filter_problems(problems)
             self._set_rows()
             self._refresh_data()
+
+    def filter_problems(self, new_problems):
+        filtered = []
+        try:
+            for problem in new_problems:
+                if int(problem.trigger.severity) >= int(Settings.config.get('AlertFilter', 'min-severity')):
+                    filtered.append(problem)
+        except Exception as e:
+            print(e)
 
     def _refresh_data(self):
         row = 0
