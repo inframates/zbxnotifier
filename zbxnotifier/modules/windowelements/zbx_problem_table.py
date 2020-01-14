@@ -75,9 +75,18 @@ class ZbxProblemTable(QTableWidget):
         if self.problems != problems:
             self.alert_generator.add_alert("New Zabbix alert created.", "Please check the alerts for more information.")
 
-            self.problems = problems
+            self.problems = self.filter_problems(problems)
             self._set_rows()
             self._refresh_data()
+
+    def filter_problems(self, new_problems):
+        filtered = []
+        try:
+            for problem in new_problems:
+                if int(problem.trigger.severity) >= int(Settings.config.get('AlertFilter', 'min-severity')):
+                    filtered.append(problem)
+        except Exception as e:
+            print(e)
 
     def _refresh_data(self):
         row = 0

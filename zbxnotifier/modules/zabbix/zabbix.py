@@ -1,6 +1,6 @@
 from pyzabbix.api import ZabbixAPI
 from zbxnotifier.modules.settings import Settings
-from zbxnotifier.modules.zabbix.elements import Trigger, Problem, Event, Host
+from zbxnotifier.modules.zabbix.elements import Trigger, Problem, Event, Host, HostGroup
 from pyzabbix.api import ZabbixAPIException
 import time
 import logging
@@ -121,6 +121,17 @@ class ZabbixConnection:
 
 
 class Zabbix:
+
+    def get_hostgroups(self):
+        """
+        Returns a list of hostgroups, which are available for the user
+        :return:
+        """
+        data = ZabbixConnection.connection.hostgroup.get(output='extend')
+        host_groups = []
+        for hostgroup in data:
+            host_groups.append(HostGroup(hostgroup.get('groupid'), hostgroup.get('name')))
+        return host_groups
 
     def get_problems(self):
         """
