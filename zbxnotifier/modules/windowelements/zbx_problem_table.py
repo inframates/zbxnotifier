@@ -1,6 +1,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from zbxnotifier.modules.alertgenerator import AlertGenerator
+from zbxnotifier.modules.settings import Settings
 import logging
 
 logger = logging.getLogger('basic')
@@ -37,20 +38,27 @@ class ZbxProblemTable(QTableWidget):
         self._set_rows()
 
     @staticmethod
+    def _color_str_to_list(color):
+        colors = []
+        for color in color.split(':'):
+            colors.append(int(color))
+        return colors
+
+    @staticmethod
     def _get_bg_color(severity):
         logger.debug("BG Color. severity: " + str(severity))
-        if severity == '1':
-            return [151, 170, 179]
+        if severity == '0':
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'not_classified'))
+        elif severity == '1':
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'information'))
         elif severity == '2':
-            return [116, 153, 255]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'warning'))
         elif severity == '3':
-            return [255, 200, 89]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'average'))
         elif severity == '4':
-            return [255, 160, 89]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'high'))
         elif severity == '5':
-            return [233, 118, 89]
-        elif severity == '6':
-            return [228, 89, 89]
+            return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'disaster'))
         logger.critical("Invalid severity received, can't decode to color: " + str(severity))
         return [0, 0, 0]
 
