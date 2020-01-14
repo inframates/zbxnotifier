@@ -50,6 +50,11 @@ class Settings:
         Settings.config.set('ProblemColors', 'high', '233:118:89')
         Settings.config.set('ProblemColors', 'disaster', '228:89:89')
 
+        Settings.config.add_section('AlertFilter')
+        Settings.config.set('AlertFilter', 'group', '')
+        Settings.config.set('AlertFilter', 'min-severity', '0')
+        Settings.config.set('AlertFilter', 'exclude-tags', '')
+
         Settings.config.add_section('ZabbixSettings')
         Settings.config.set('ZabbixSettings', 'username', '')
         Settings.config.set('ZabbixSettings', 'server', '')

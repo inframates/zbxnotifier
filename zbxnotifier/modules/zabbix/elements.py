@@ -91,3 +91,9 @@ class Event:
         return False
 
 
+class HostGroup:
+    def __init__(self, groupid, name):
+        self.groupid = groupid
+        self.name = name
+
+
