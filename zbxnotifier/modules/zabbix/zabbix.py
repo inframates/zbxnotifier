@@ -122,16 +122,31 @@ class ZabbixConnection:
 
 class Zabbix:
 
-    def get_hostgroups(self):
+    def get_hostgroups(self, groupids=None):
         """
         Returns a list of hostgroups, which are available for the user
         :return:
         """
-        data = ZabbixConnection.connection.hostgroup.get(output='extend')
+        if groupids is None:
+            data = ZabbixConnection.connection.hostgroup.get(output='extend')
+        else:
+            data = ZabbixConnection.connection.hostgroup.get(output='extend', groupids=groupids)
+
         host_groups = []
         for hostgroup in data:
             host_groups.append(HostGroup(hostgroup.get('groupid'), hostgroup.get('name')))
         return host_groups
+
+    def get_hosts(self, groupids=None):
+        if groupids is None:
+            data = ZabbixConnection.connection.host.get(output='extend')
+        else:
+            data = ZabbixConnection.connection.host.get(output='extend', groupids=groupids)
+
+        hosts = []
+        for host in data:
+            hosts.append(Host(host.get('host'), host.get('hostid')))
+        return hosts
 
     def get_problems(self):
         """
@@ -163,7 +178,6 @@ class Zabbix:
             for host in event.get('hosts'):
                 hosts.append(Host(host.get('name'), host.get('hostid')))
             events.append(Event(event.get('objectid'), event.get('eventid'), hosts))
-
         return events
 
     def get_triggers(self, trigger_ids):

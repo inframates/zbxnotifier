@@ -1,12 +1,10 @@
-from PyQt5.QtCore import QRunnable, pyqtSlot, pyqtSignal, QObject
+from PyQt5.QtCore import QRunnable, pyqtSlot
 from zbxnotifier.modules.zabbix.zabbix import Zabbix, ZabbixConnection
+from zbxnotifier.modules.zabbix.signals import WorkerSignals
+from zbxnotifier.modules.zabbix.hostgroups import HostGroups
+from zbxnotifier.modules.settings import Settings
 import sys
-
-
-class WorkerSignals(QObject):
-    finished = pyqtSignal()
-    error = pyqtSignal(tuple)
-    result = pyqtSignal(object)
+import time
 
 
 class ProblemsWorker(QRunnable):
@@ -64,4 +62,28 @@ class ProblemsWorker(QRunnable):
             if problem.trigger is not None and problem.event is not None:
                 clear_problems.append(problem)
 
-        return clear_problems
+        return self._filter_by_hostgroup(clear_problems)
+
+    def _filter_by_hostgroup(self, problems):
+        hostgroup_to_filter = Settings.config.get('AlertFilter', 'group')
+        if hostgroup_to_filter == "":
+            return problems
+
+        while HostGroups.initialized is False:
+            time.sleep(1)
+
+        filter_group = None
+        for hostgroup in HostGroups.groups:
+            if hostgroup.name == hostgroup_to_filter:
+                filter_group = hostgroup
+
+        hostgroup_hosts = self.zbx.get_hosts(filter_group.groupid)
+
+        filtered_problems = []
+        for problem in problems:
+            for host in problem.event.hosts:
+                if host in hostgroup_hosts:
+                    filtered_problems.append(problem)
+                    continue
+
+        return filtered_problems

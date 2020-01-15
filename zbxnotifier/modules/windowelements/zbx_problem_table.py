@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from zbxnotifier.modules.alertgenerator import AlertGenerator
 from zbxnotifier.modules.settings import Settings
 import logging
-
+from datetime import datetime
 logger = logging.getLogger('basic')
 
 
@@ -108,7 +108,8 @@ class ZbxProblemTable(QTableWidget):
             severity.setBackground(QColor(*ZbxProblemTable._get_bg_color(problem.trigger.severity)))
 
             hostname = QTableWidgetItem(', '.join(hostnames))
-            problem_clock = QTableWidgetItem(problem.clock)
+
+            problem_clock = QTableWidgetItem(self._timestamp_to_str(problem.clock))
             trigger_description = QTableWidgetItem(problem.trigger.description)
 
             self.setItem(row, 0, problem_clock)
@@ -118,6 +119,9 @@ class ZbxProblemTable(QTableWidget):
             row = row + 1
         self.update()
         self.show()
+
+    def _timestamp_to_str(self, timestamp):
+        return datetime.utcfromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S')
 
     def _set_rows(self):
         self.setRowCount(len(self.problems))

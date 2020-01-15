@@ -2,12 +2,12 @@ from PyQt5.QtWidgets import QApplication
 from threading import Thread
 import sys
 import logging
-
 from zbxnotifier.modules.windowelements.main_window import MainWindow
 from zbxnotifier.modules.settings import Settings
 from zbxnotifier.modules.zabbix.zabbix import ZabbixConnection
 from zbxnotifier.modules.logging import Logging
 from zbxnotifier.modules.alertgenerator import AlertGenerator
+from zbxnotifier.modules.zabbix.hostgroups import HostGroups
 import queue
 
 
@@ -28,6 +28,9 @@ class Application:
 
         zbx_conn_thread = Thread(target=ZabbixConnection().connect_thread, args=[logger, signal_queue])
         zbx_conn_thread.start()
+
+        host_group_worker = HostGroups()
+        host_group_worker.start()
 
 
         window = MainWindow(signal_queue)
