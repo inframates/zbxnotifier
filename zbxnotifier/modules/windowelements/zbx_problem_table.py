@@ -46,7 +46,6 @@ class ZbxProblemTable(QTableWidget):
 
     @staticmethod
     def _get_bg_color(severity):
-        logger.debug("BG Color. severity: " + str(severity))
         if severity == '0':
             return ZbxProblemTable._color_str_to_list(Settings.config.get('ProblemColors', 'not_classified'))
         elif severity == '1':
