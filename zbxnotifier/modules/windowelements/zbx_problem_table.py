@@ -62,20 +62,31 @@ class ZbxProblemTable(QTableWidget):
         logger.critical("Invalid severity received, can't decode to color: " + str(severity))
         return [0, 0, 0]
 
-    def update_data(self, problems):
+    def update_data(self, actual_problems):
         """
         Updates data list only, if there's a difference in it.
         :param problems:
         :return:
         """
-        if self.problems is not None and problems is not None:
-            self.problems.sort()
-            problems.sort()
+        actual_problems = self.filter_problems(actual_problems)
 
-        if self.problems != problems:
-            self.alert_generator.add_alert("New Zabbix alert created.", "Please check the alerts for more information.")
+        self.problems.sort()
+        actual_problems.sort()
 
-            self.problems = self.filter_problems(problems)
+        # Do we have new problems? -> if yes, then create an alert
+        resolved_problems = set(self.problems) - set(actual_problems)
+        new_problems = set(actual_problems) - set(self.problems)
+
+        self.problems = actual_problems
+
+        # If we have new problems:
+        if len(new_problems) > 0:
+            logging.debug("New alert detected, creating alert notirication(s).")
+            self.alert_generator.add_alert("Zabbix alert notification",
+                                           "New Zabbix alert received. Please check the alerts for more information.")
+
+        if len(new_problems) > 0 or len(resolved_problems) > 0:
+            logging.debug("Difference found in the problem lists, re-drawing problem list.")
             self._set_rows()
             self._refresh_data()
 
